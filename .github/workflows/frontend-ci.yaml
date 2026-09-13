@@ -32,16 +32,23 @@ jobs:
       - run: npm run lint
 
   test:
+    name: Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
         with:
-          node-version-file: starter/frontend/.nvmrc
+          node-version: "18.14.2"
           cache: npm
           cache-dependency-path: starter/frontend/package-lock.json
-      - run: npm ci
-      - run: npm run test -- --watchAll=false
+      - name: Install dependencies
+        working-directory: starter/frontend
+        run: npm ci
+      - name: Run tests
+        working-directory: starter/frontend
+        run: npm test
         env:
           CI: true
 
